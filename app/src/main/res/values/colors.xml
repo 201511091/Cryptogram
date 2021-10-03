@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="black_op">#66000000</color>
+    <color name="color_main">#43adff</color>
+    <color name="gray_2">#585858</color>
+    <color name="gray4">#a9a9a9</color>
+    <color name="gray1">#2b2d2e</color>
+    <color name="green">#6aa76f</color>
+    <color name="gray6">#e0e0e0</color>
+    <color name="gray5">#cdcdcd</color>
+    <color name="gray3">#787878</color>
+    <color name="blue__calendar__select">#5ea2ff</color>
+    <color name="pink">#ff7474</color>
+    <color name="gray7">#eeeeee</color>
+    <color name="b_g">#f9f9f9</color>
+    <color name="blue__calendar">#87bfff</color>
+    <color name="green__calendar__select">#81cc89</color>
+    <color name="green__calendar">#aee6b4</color>
+    <color name="green__dark">#7f9c82</color>
+
+    <color name="color_selected_tab_color">#8ed7ff</color>
+    <color name="color_selected_tab_indicator">#0099cc</color>
+    <color name="color_none_selected_tab_color">#252525</color>
+</resources>

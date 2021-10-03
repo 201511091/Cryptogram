@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "549350268649",
+    "firebase_url": "https://cryptogram-users-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "cryptogram-users",
+    "storage_bucket": "cryptogram-users.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549350268649:android:6b108140614371faa1da78",
+        "android_client_info": {
+          "package_name": "com.cm.cryptogram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549350268649-j2pp6jbvv701bmfq2gckkntv6e9n2gs2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqgOG04j1LuRUyZpPLP_2Qasgr0nhzQY0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549350268649-j2pp6jbvv701bmfq2gckkntv6e9n2gs2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549350268649:android:40d93da36c28728ea1da78",
+        "android_client_info": {
+          "package_name": "com.exam.ble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549350268649-j2pp6jbvv701bmfq2gckkntv6e9n2gs2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqgOG04j1LuRUyZpPLP_2Qasgr0nhzQY0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549350268649-j2pp6jbvv701bmfq2gckkntv6e9n2gs2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
