@@ -32,11 +32,21 @@ internal class TabCommunityFragment : BaseFragment<FragmentCommunityBinding>() {
         for (i in 1..(jsonObj.length() - 1)){
             val item = jsonObj.getJSONObject(i)
             if (item.getString("type") == "comm") {
-                list.add(TabCard.NewsCardItem(CardItem(0,
-                    "제목: "+ item.getString("title"),
-                    "내용: " + item.getString("text"),
-                    item.getString("link")
-                )))
+                if ( !preferenceHelper.keyWord.toString().equals("GET_ALL") ) {
+                    if ((item.getString("title").contains(preferenceHelper.keyWord.toString())) ||
+                        (item.getString("text").contains(preferenceHelper.keyWord.toString()))){
+                        list.add(TabCard.NewsCardItem(CardItem(0,
+                            "제목: "+ item.getString("title"),
+                            "내용: " + item.getString("text"),
+                            item.getString("link")
+                        ))) }
+                } else {
+                    list.add(TabCard.NewsCardItem(CardItem(0,
+                        "제목: "+ item.getString("title"),
+                        "내용: " + item.getString("text"),
+                        item.getString("link")
+                    )))
+                }
             }
         }
         homeAdapter.submitList(list)

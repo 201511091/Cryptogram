@@ -1,5 +1,6 @@
 package com.cm.cryptogram.ui.tab
 
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cm.cryptogram.L
 import com.cm.cryptogram.R
@@ -30,16 +31,29 @@ internal class TabNewsFragment : BaseFragment<FragmentNewsBinding>() {
 
     private fun onLoad(){
         //데이터 더미데이터 생성
+        var cnt = 0
         val jsonObj = JSONArray(jsonData)
         val list = arrayListOf<TabCard>()
         for (i in 1..(jsonObj.length() - 1)){
             val item = jsonObj.getJSONObject(i)
             if (item.getString("type") == "news") {
-                list.add(TabCard.NewsCardItem(CardItem(0,
-                    "제목: "+ item.getString("title"),
-                    "내용: " + item.getString("text"),
-                    item.getString("link")
-                )))
+                if ( !preferenceHelper.keyWord.toString().equals("GET_ALL") ) {
+                    if ((item.getString("title").contains(preferenceHelper.keyWord.toString())) ||
+                        (item.getString("text").contains(preferenceHelper.keyWord.toString()))){
+                        list.add(TabCard.NewsCardItem(CardItem(0,
+                            "제목: "+ item.getString("title"),
+                            "내용: " + item.getString("text"),
+                            item.getString("link")
+                        )))
+                        cnt++
+                    }
+                } else {
+                    list.add(TabCard.NewsCardItem(CardItem(0,
+                        "제목: "+ item.getString("title"),
+                        "내용: " + item.getString("text"),
+                        item.getString("link")
+                    )))
+                }
             }
         }
         homeAdapter.submitList(list)
