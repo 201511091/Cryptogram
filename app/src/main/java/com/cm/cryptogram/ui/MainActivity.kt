@@ -3,8 +3,8 @@ package com.cm.cryptogram.ui
 import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.fragment.app.Fragment
-import com.cm.cryptogram.L
 import com.cm.cryptogram.R
 import com.cm.cryptogram.base.BaseActivity
 import com.cm.cryptogram.base.HttpRequestHelper
@@ -18,6 +18,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.cm.cryptogram.adapter.HistoryAdapter
+import com.cm.cryptogram.model.HistoryItem
+import org.json.JSONArray
+
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), CoroutineScope {
     private lateinit var job: Job
@@ -31,25 +37,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CoroutineScope {
     override fun onViewCreated() {
         job = Job()
         launch(Dispatchers.Main) {
-            val result = HttpRequestHelper().requestKtorIo()
+            val httpClient = HttpRequestHelper()
+            httpClient.setTargetUrl("https://ctrytogram-default-rtdb.asia-southeast1.firebasedatabase.app/.json")
+            val result = httpClient.requestKtorIo()
             jsonData = result
-            L.i(result)
+            Log.i("http",result);
         }
-
-//        database.addValueEventListener(object: ValueEventListener {
-//
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                val post = snapshot.getValue<Post>()
-//                Log.d("Firebase", "Value is: " + post)
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                Log.w("Firebase", "Failed to read value.", error.toException())
-//            }
-//
-//        })
 
         if(!preferenceHelper.loginState){
             //로그인상태가 아닐시 로그인 화면으로 전환 시도.
@@ -57,28 +50,54 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CoroutineScope {
             finish()
             return
         }
+        historyDatas = mutableListOf<HistoryItem>()
+        recyclerView = findViewById(R.id.historyRecycler)
+        recyclerView.setHasFixedSize(true)
+        viewManger = LinearLayoutManager(this)
+        recyclerView.layoutManager = viewManger
+        viewAdapter = HistoryAdapter(this, historyDatas)
+        recyclerView.adapter = viewAdapter
+        viewAdapter.notifyDataSetChanged()
+        recyclerView.visibility = View.VISIBLE
+        recyclerView.requestLayout()
+
         database = Firebase.database.reference
 
-        database.child("0").child("keyword_history").get().addOnSuccessListener {
-            Log.i("firebase", "Got value ${it.value}")
-            preferenceHelper.userPrefInfo = it.value.toString()
-        }.addOnFailureListener{
-            Log.e("firebase", "Error getting data", it)
+        var upi = preferenceHelper.userPrefInfo
+        Log.i("UPI", upi.toString())
+        var tempStr = "[" + upi + "]"
+        Log.i("firebase", "Got value ${tempStr}")
+        var jsonStr = JSONArray(tempStr)
+        Log.i("firebase", "Got Json ${jsonStr.toString()}")
+        var hm : HashMap<String, Any> = HashMap()
+        for (key in jsonStr.getJSONObject(0).keys()) {
+            hm = HashMap()
+            Log.i("key", key)
+            historyDatas.add(HistoryItem(key,jsonStr.getJSONObject(0).getString(key)))
         }
+        if ( preferenceHelper.keyWord != null ) {
+            hm = HashMap()
+            hm.put(preferenceHelper.keyWord!!, "1")
+            historyDatas.add(HistoryItem(preferenceHelper.keyWord!!,"1"))
+            database.child(preferenceHelper.userIndex!!).child("keyword_history").updateChildren(hm)
+        }
+
         //시작화면은 키워드화면으로
         replaceFragment(newInstance(KeywordSettingFragment()))
-
+        historyDatas.sortByDescending{ it.content }
+        viewAdapter.notifyDataSetChanged()
+        recyclerView.requestLayout()
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener{
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when(item.itemId){
                     R.id.keyword -> {
-                        L.i("keyword pressed")
+                        Log.i("http","keyword pressed")
                         replaceFragment(newInstance(KeywordSettingFragment()))
                         return true
                     }
                     R.id.invest -> {
-                        L.i("invest pressed")
+                        Log.i("http","invest pressed")
                         replaceFragment(newInstance(InvestMentFragment()))
                         return true
                     }

@@ -17,10 +17,15 @@
         <entry key="..\:/Users/Emotionwave_VR/Desktop/Cryptogram/app/src/main/res/layout/fragment_keyword.xml" value="0.31666666666666665" />
         <entry key="..\:/Users/Emotionwave_VR/Desktop/Cryptogram/app/src/main/res/layout/fragment_sns.xml" value="0.2046875" />
         <entry key="..\:/Users/Emotionwave_VR/Desktop/Cryptogram/app/src/main/res/menu/menu_bottom_nav_main.xml" value="0.2046875" />
+        <entry key="..\:/Users/eunho/OneDrive/Documents/GitHub/Crypto/Cryptogram/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/eunho/OneDrive/Documents/GitHub/Crypto/Cryptogram/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/eunho/OneDrive/Documents/GitHub/Crypto/Cryptogram/app/src/main/res/layout/community_item_row.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/eunho/OneDrive/Documents/GitHub/Crypto/Cryptogram/app/src/main/res/layout/fragment_keyword.xml" value="0.33" />
+        <entry key="..\:/Users/eunho/OneDrive/Documents/GitHub/Crypto/Cryptogram/app/src/main/res/layout/history_item.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

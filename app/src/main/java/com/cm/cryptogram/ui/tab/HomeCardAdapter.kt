@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.cm.cryptogram.L
 import com.cm.cryptogram.R
 import com.cm.cryptogram.databinding.CommunityItemRowBinding
 import com.cm.cryptogram.databinding.NewItemRowBinding
@@ -79,7 +79,7 @@ internal class HomeCardAdapter constructor() : ListAdapter<TabCard, RecyclerView
             binding.tvTitle.text = cardItem.title
             binding.tvContent.text = cardItem.content
             binding.tvBtn.setOnClickListener(View.OnClickListener{
-                L.d("--------------BUITTONCLICKED---------------")
+                Log.i("ADAPTER","--------------BUITTONCLICKED---------------")
                 openNewTabWindow(data.cardItem.link, it.context)
             })
         }

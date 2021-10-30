@@ -2,7 +2,6 @@ package com.cm.cryptogram.ui.tab
 
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cm.cryptogram.L
 import com.cm.cryptogram.R
 import com.cm.cryptogram.base.BaseActivity.Companion.jsonData
 import com.cm.cryptogram.base.BaseFragment

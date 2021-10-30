@@ -14,10 +14,21 @@ class PreferenceHelper(context: Context) {
             putBoolean("KEY_LOGIN_STATE", value)
         }
 
-    var loginInfo : String?
-        get() = preferences.getString("KEY_USER", null)
+    var loginToken : String?
+        get() = preferences.getString("KEY_TOKEN", null)
         set(value) = preferences.edit() {
-            putString("KEY_USER", value)
+            putString("KEY_TOKEN", value)
+        }
+    var prevLoginToken : String?
+        get() = preferences.getString("KEY_TOKEN_PREV", null)
+        set(value) = preferences.edit() {
+            putString("KEY_TOKEN_PREV", value)
+        }
+
+    var userIndex : String?
+        get() = preferences.getString("KEY_USER_INDEX", null)
+        set(value) = preferences.edit() {
+            putString("KEY_USER_INDEX", value)
         }
 
     var userPrefInfo : String?
