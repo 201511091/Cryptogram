@@ -19,12 +19,6 @@ class PreferenceHelper(context: Context) {
         set(value) = preferences.edit() {
             putString("KEY_TOKEN", value)
         }
-//    var prevLoginToken : String?
-//        get() = preferences.getString("KEY_TOKEN_PREV", null)
-//        set(value) = preferences.edit() {
-//            putString("KEY_TOKEN_PREV", value)
-//        }
-
     var userIndex : String?
         get() = preferences.getString("KEY_USER_INDEX", null)
         set(value) = preferences.edit() {

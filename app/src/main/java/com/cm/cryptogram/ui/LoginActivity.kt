@@ -103,10 +103,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), CoroutineScope {
             if ( !( isIdRight && isPwdRight ) ) {
                 if ( !isIdRight ) {
                     Log.i("LOGIN_FAIL", "아이디가 틀렸습니다!")
+                    Toast.makeText(this@LoginActivity, "아이디가 틀렸습니다!", Toast.LENGTH_SHORT).show()
                 } else if ( !isPwdRight ) {
                     Log.i("LOGIN_FAIL", "비밀번호가 틀렸습니다!")
+                    Toast.makeText(this@LoginActivity, "비밀번호가 틀렸습니다!", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.i("LOGIN_FAIL", "아이디 비밀번호가 모두 틀렸습니다!")
+                    Toast.makeText(this@LoginActivity, "아이디 비밀번호가 모두 틀렸습니다!", Toast.LENGTH_SHORT).show()
                 }
                 preferenceHelper.loginState = false
             } else {
@@ -129,6 +132,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), CoroutineScope {
                         }
                     } else {
                         Log.e("firebase", "서버에 해쉬 코드가 없습니다. 최초 로그인 시도입니다.")
+                        Toast.makeText(this@LoginActivity, "서버에 해쉬 코드가 없습니다. 최초 로그인 시도입니다.", Toast.LENGTH_SHORT).show()
                         preferenceHelper.loginToken = hashedCode;
 
                         val restoreKeyRndNum = generateRandomNum().toString();
@@ -145,10 +149,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), CoroutineScope {
                     }
                 }.addOnFailureListener{
                     Log.e("firebase", "Firebase 에러", it)
+                    Toast.makeText(this@LoginActivity, "서버 에러", Toast.LENGTH_SHORT).show()
                     preferenceHelper.loginState = false
                 }
-
-
             }
         }
     }
