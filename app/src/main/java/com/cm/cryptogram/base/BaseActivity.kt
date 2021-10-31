@@ -1,6 +1,7 @@
 package com.cm.cryptogram.base
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -43,9 +44,10 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
             return fragment
         }
         lateinit var jsonData: String
-        lateinit var recyclerView: RecyclerView
+        lateinit var recyclerView : RecyclerView
         lateinit var viewAdapter: RecyclerView.Adapter<HistoryAdapter.ViewHolder>
         lateinit var viewManger : RecyclerView.LayoutManager
         lateinit var historyDatas : MutableList<HistoryItem>
+        lateinit var historyViewText : TextView
     }
 }

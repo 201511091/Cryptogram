@@ -1,8 +1,11 @@
 package com.cm.cryptogram.ui
 
+import android.content.Intent
 import android.service.autofill.TextValueSanitizer
 import android.util.Log
+import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.cm.cryptogram.R
 import com.cm.cryptogram.base.BaseActivity
@@ -39,6 +42,14 @@ internal class KeywordSettingFragment : BaseFragment<FragmentKeywordBinding>() {
             activity?.let {
                 preferenceHelper.keyWord = binding.editSearch.text.toString()
                 database = Firebase.database.reference
+
+                database.child(preferenceHelper.userIndex!!).child("keyword_history").get().addOnSuccessListener {
+                    preferenceHelper.userPrefInfo = it.value.toString()
+                    Log.i("firebase", "Firebase result" + preferenceHelper.userPrefInfo)
+                }.addOnFailureListener{
+                    Log.e("firebase", "Firebase 에러", it)
+                }
+
                 var upi = preferenceHelper.userPrefInfo
                 var tempStr = "[" + upi + "]"
                 Log.i("firebase", "Got value ${tempStr}")
@@ -47,7 +58,6 @@ internal class KeywordSettingFragment : BaseFragment<FragmentKeywordBinding>() {
                 var isInHistory = false
                 var hm : HashMap<String, Any> = HashMap()
                 for (key in jsonStr.getJSONObject(0).keys()) {
-                    historyDatas.add(HistoryItem(key, jsonStr.getJSONObject(0).getString(key)))
                     hm = HashMap()
                     if (key.equals(preferenceHelper.keyWord)) {
                         isInHistory = true
@@ -56,27 +66,29 @@ internal class KeywordSettingFragment : BaseFragment<FragmentKeywordBinding>() {
 
                         database.child(preferenceHelper.userIndex!!).child("keyword_history").child(key).removeValue()
                         database.child(preferenceHelper.userIndex!!).child("keyword_history").updateChildren(hm)
-
+                        var cnt = 0
                         for ( item in historyDatas ) {
                             if ( item.title.equals(key) ) {
                                 val tempVal = ((item.content).toInt() + 1).toString()
-                                historyDatas.remove(item)
+                                historyDatas.removeAt(cnt)
                                 historyDatas.add(HistoryItem(key, tempVal))
                                 break
                             }
+                            cnt++
                         }
                     }
                 }
-                if ( !isInHistory && ( preferenceHelper.keyWord != null )  ) {
+                if ( !isInHistory || ( preferenceHelper.keyWord == null )  ) {
                     hm = HashMap()
                     hm.put(preferenceHelper.keyWord!!, "1")
                     historyDatas.add(HistoryItem(preferenceHelper.keyWord!!, "1"))
                     database.child(preferenceHelper.userIndex!!).child("keyword_history").updateChildren(hm)
-//                    tvArr[tvArrCnt].text = preferenceHelper.keyWord + "을 1번 검색하셨어요."
                 }
                 historyDatas.sortByDescending{ it.content }
                 viewAdapter.notifyDataSetChanged()
                 recyclerView.requestLayout()
+                recyclerView.visibility = View.INVISIBLE
+                BaseActivity.historyViewText.visibility = View.INVISIBLE
 
                 it.replaceFragment(newInstance(InvestMentFragment()))
                 it.replaceBottomMenuIndex(1)

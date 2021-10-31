@@ -25,6 +25,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), CoroutineScope {
     private lateinit var job: Job
     private lateinit var userInfos : String
     private lateinit var database: DatabaseReference
+    private var isFinished = false
     override val coroutineContext: CoroutineContext get() = Dispatchers.Main + job
 
     override fun getLayoutId(): Int {
@@ -98,15 +99,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), CoroutineScope {
                 if ( isIdRight )
                     break;
             }
-
-            Log.i("BTN_BOOL", "BOOLS: " + isIdRight + " : " + isPwdRight)
+            Log.i("LOGIN_BOOL", "BOOLS: " + isIdRight + " : " + isPwdRight)
             if ( !( isIdRight && isPwdRight ) ) {
                 if ( !isIdRight ) {
-
+                    Log.i("LOGIN_FAIL", "아이디가 틀렸습니다!")
                 } else if ( !isPwdRight ) {
-
+                    Log.i("LOGIN_FAIL", "비밀번호가 틀렸습니다!")
                 } else {
-
+                    Log.i("LOGIN_FAIL", "아이디 비밀번호가 모두 틀렸습니다!")
                 }
                 preferenceHelper.loginState = false
             } else {
@@ -116,54 +116,32 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), CoroutineScope {
 
                 database.child(idIndex.toString()).child("hash_code").get().addOnSuccessListener {
                     Log.i("firebase", "Got value ${it.value}")
-                    Log.i("login_pahse", preferenceHelper.prevLoginToken + " : " + preferenceHelper.loginToken)
 
                     if ( it.value != null ) {
-                        if (preferenceHelper.prevLoginToken.equals(it.value.toString())) {
-                            preferenceHelper.prevLoginToken = it.value.toString();
-                            preferenceHelper.loginToken = hashedCode
-
-                            hm.put("hash_code", hashedCode)
-                            database.child(idIndex.toString()).updateChildren(hm)
-
+                        if ( preferenceHelper.loginToken.equals(it.value.toString()) ) {
                             preferenceHelper.loginState = true
-
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
                         } else {
-                            Toast.makeText(this@LoginActivity, "로그인 실패! 다시 시도하세요!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginActivity, "인증 되지 않은 기기 입니다!", Toast.LENGTH_SHORT).show()
                             preferenceHelper.loginState = false
+
                         }
                     } else {
                         Log.e("firebase", "서버에 해쉬 코드가 없습니다. 최초 로그인 시도입니다.")
-                        preferenceHelper.prevLoginToken = hashedCode;
+                        preferenceHelper.loginToken = hashedCode;
+
+                        val restoreKeyRndNum = generateRandomNum().toString();
+                        val restoreKey = hashSHA256( hashedCode + restoreKeyRndNum )
+
                         hm.put("hash_code", hashedCode)
+                        hm.put("hash_restore_key", restoreKey)
                         database.child(idIndex.toString()).updateChildren(hm)
-                        if ( preferenceHelper.loginToken == null ) {
-                            database.child(idIndex.toString()).child("hash_code").get().addOnSuccessListener {
-                                Log.i("firebase2", "Got value ${it.value}")
 
-                                if (preferenceHelper.prevLoginToken.equals(it.value.toString())) {
-                                    preferenceHelper.prevLoginToken = it.value.toString();
-                                    preferenceHelper.loginToken = hashedCode
+                        preferenceHelper.loginState = true
 
-                                    hm.put("hash_code", hashedCode)
-                                    database.child(idIndex.toString()).updateChildren(hm)
-
-                                    preferenceHelper.loginState = true
-
-                                    startActivity(Intent(this,MainActivity::class.java))
-                                    finish()
-                                } else {
-                                    Toast.makeText(this@LoginActivity, "로그인 실패! 다시 시도하세요!", Toast.LENGTH_SHORT).show()
-                                    preferenceHelper.loginState = false
-                                }
-
-                            }.addOnFailureListener{
-                                Log.e("firebase", "토큰 인증 에러 발생", it)
-                                preferenceHelper.loginState = false
-                            }
-                        }
+                        startActivity(Intent(this,MainActivity::class.java))
+                        finish()
                     }
                 }.addOnFailureListener{
                     Log.e("firebase", "Firebase 에러", it)
@@ -174,4 +152,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), CoroutineScope {
             }
         }
     }
+    override fun onBackPressed() {
+        if ( isFinished ) {
+            super.onBackPressed()
+        } else {
+            Log.i("BACKBUTTON_PRESSED", "NOT DONE YET")
+        }
+    }
+
 }

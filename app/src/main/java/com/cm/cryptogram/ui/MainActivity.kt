@@ -28,6 +28,7 @@ import org.json.JSONArray
 class MainActivity : BaseActivity<ActivityMainBinding>(), CoroutineScope {
     private lateinit var job: Job
     private lateinit var database: DatabaseReference
+    private var isFinished = false
     override val coroutineContext: CoroutineContext get() = Dispatchers.Main + job
 
     override fun getLayoutId(): Int {
@@ -52,6 +53,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CoroutineScope {
         }
         historyDatas = mutableListOf<HistoryItem>()
         recyclerView = findViewById(R.id.historyRecycler)
+        historyViewText = findViewById(R.id.historyText)
         recyclerView.setHasFixedSize(true)
         viewManger = LinearLayoutManager(this)
         recyclerView.layoutManager = viewManger
@@ -93,11 +95,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CoroutineScope {
                 when(item.itemId){
                     R.id.keyword -> {
                         Log.i("http","keyword pressed")
+                        recyclerView.visibility = View.VISIBLE
+                        historyViewText.visibility = View.VISIBLE
                         replaceFragment(newInstance(KeywordSettingFragment()))
                         return true
                     }
                     R.id.invest -> {
                         Log.i("http","invest pressed")
+                        recyclerView.visibility = View.INVISIBLE
+                        historyViewText.visibility = View.INVISIBLE
                         replaceFragment(newInstance(InvestMentFragment()))
                         return true
                     }
@@ -120,7 +126,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CoroutineScope {
         fragmentTransaction.commit()
     }
 
-
-
-
+    override fun onBackPressed() {
+        if ( isFinished ) {
+            super.onBackPressed()
+        } else {
+            Log.i("BACKBUTTON_PRESSED", "NOT DONE YET")
+        }
+    }
 }
